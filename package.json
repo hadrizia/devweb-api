@@ -1,0 +1,22 @@
+{
+  "name": "devweb-api",
+  "version": "1.0.0",
+  "description": "API que servirá para o projeto desenvolvido na disciplina Programação 3",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hadrizia/devweb-api.git"
+  },
+  "author": "Hadrizia Santos",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hadrizia/devweb-api/issues"
+  },
+  "homepage": "https://github.com/hadrizia/devweb-api#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
