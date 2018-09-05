@@ -3,24 +3,24 @@ const bodyParser = require('body-parser');
 
 const morgan  = require('morgan');
 
-var swagger = require('swagger-express');
+//var swagger = require('swagger-express');
 
 const app = express();
 
-app.use(swagger.init(app, {
-    apiVersion: '1.0',
-    swaggerVersion: '1.0',
-    swaggerURL: '/swagger',
-    swaggerJSON: '/api-docs.json',
-    swaggerUI: './public/swagger/',
-    basePath: 'http://localhost:3000',
-    apis: ['./src/routes/reports.js', './src/routes/users.js', './src/routes/comments.js'],
-    middleware: function(req, res){}
-  }));
+// app.use(swagger.init(app, {
+//     apiVersion: '1.0',
+//     swaggerVersion: '1.0',
+//     swaggerURL: '/swagger',
+//     swaggerJSON: '/api-docs.json',
+//     swaggerUI: './public/swagger/',
+//     basePath: 'http://localhost:3000',
+//     apis: ['./src/routes/reports.js', './src/routes/users.js', './src/routes/comments.js'],
+//     middleware: function(req, res){}
+//   }));
 
-let reports = require('./src/routes/reports');
-let users = require('./src/routes/users');
-let comments = require('./src/routes/comments');
+let reports = require('./reports/reports.route');
+let users = require('./users/users.route');
+let comments = require('./comments/comments.route');
 
 // faz o parse de requisições com o corpo do tipo application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));

@@ -2,10 +2,10 @@
   "name": "devweb-api",
   "version": "1.0.0",
   "description": "API que servirá para o projeto desenvolvido na disciplina Programação 3",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "test": "node tests/app.test.js",
-    "start": "node server.js"
+    "start": "node src/index.js"
   },
   "repository": {
     "type": "git",
