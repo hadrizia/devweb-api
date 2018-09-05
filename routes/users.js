@@ -1,21 +1,49 @@
 const express = require('express');
-const app = express();
+const router = express.Router();
 
 router.get('/', function(req, res) {
-    setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify({ a: 1 }));
+    res.send(JSON.stringify(
+        [
+            {
+                id: 1,
+                name: 'Hadrizia Santos',
+                photo: 'default'
+            },
+            {
+                id: 2,
+                name: 'Marianne Linhares',
+                photo: 'default'
+            }
+        ]
+    ));
 });
 
 router.post('/', function(req, res) {
-    res.send('Post request');
+    res.send(JSON.stringify(
+        {
+            id: 3,
+            name: 'Jade CatLady',
+            photo: 'default'
+        }
+    ));
 });
 
 router.put('/', function(req, res) {
-    res.send('Put request');
+    res.send(JSON.stringify(
+        {
+            id: 3,
+            name: 'Jade CatLady edited',
+            photo: 'default'
+        }
+    ));
 });
 
 router.delete('/', function(req, res) {
-    res.send('Delete request');
+    res.send(JSON.stringify(
+        {
+            sucess: true
+        }
+    ));
 });
 
 module.exports = router;
