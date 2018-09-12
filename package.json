@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "node tests/app.test.js",
-    "start": "node src/index.js"
+    "start": "if-env NODE_ENV=production ?? npm run start-prod || npm run start-dev",
+    "start-dev": "NODE_ENV=development node src/index.js",
+    "start-prod": "NODE_ENV=production node src/index.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +22,9 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
+    "if-env": "^1.0.4",
+    "memory-cache": "^0.2.0",
+    "mongoose": "^5.2.14",
     "morgan": "^1.9.0",
     "swagger-express": "^1.0.5"
   },

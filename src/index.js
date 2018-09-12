@@ -2,8 +2,25 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const morgan  = require('morgan');
 const swagger = require('swagger-express');
+var cache = require('memory-cache');
+var mongoose = require ('mongoose');
 
 const app = express();
+mongoose.connect('mongodb://localhost/test', { useNewUrlParser: true });
+
+let reports = require('./reports/reports.route');
+let users = require('./users/users.route');
+let comments = require('./comments/comments.route');
+const PORT = process.env.PORT || 3000;
+
+// create new cache instance
+var newCache = new cache.Cache();
+ 
+newCache.put('foo', 'newbaz');
+ 
+setTimeout(function() {
+  console.log('foo in new cache is ' + newCache.get('foo'));
+}, 200);
 
 // API documentation UI
 app.use(swagger.init(app, {
@@ -15,10 +32,6 @@ app.use(swagger.init(app, {
     swaggerUI: './doc/swagger/',
     apis: ['src/users/users.route.js']
   }));
-
-let reports = require('./reports/reports.route');
-let users = require('./users/users.route');
-let comments = require('./comments/comments.route');
 
 // faz o parse de requisições com o corpo do tipo application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -35,12 +48,14 @@ app.use(function (req, res, next) {
     next();  // sem o next, a chamada para aqui
 });
 
-//app.get('/', (req, res) => res.send('Hello World!'));
+if (process.env.NODE_ENV !== 'production') {
+    console.log('dev enviroment detected!');
+  }
 
-app.listen(3000, () => console.log('Example app listening on port 3000!'));
+app.listen(PORT, () => console.log('Example app listening on port '+ PORT + '!'));
 
 app.use('/reports', reports);
 app.use('/users', users);
 app.use('/comments', comments);
 
-module.exports = app
+module.exports = app;
