@@ -1,22 +1,20 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-
 const morgan  = require('morgan');
-
-//var swagger = require('swagger-express');
+const swagger = require('swagger-express');
 
 const app = express();
 
-// app.use(swagger.init(app, {
-//     apiVersion: '1.0',
-//     swaggerVersion: '1.0',
-//     swaggerURL: '/swagger',
-//     swaggerJSON: '/api-docs.json',
-//     swaggerUI: './public/swagger/',
-//     basePath: 'http://localhost:3000',
-//     apis: ['./src/routes/reports.js', './src/routes/users.js', './src/routes/comments.js'],
-//     middleware: function(req, res){}
-//   }));
+// API documentation UI
+app.use(swagger.init(app, {
+    apiVersion: '1.0',
+    swaggerVersion: '1.0',
+    basePath: 'http://localhost:3000',
+    swaggerURL: '/swagger',
+    swaggerJSON: '/api-docs.json',
+    swaggerUI: './doc/swagger/',
+    apis: ['src/users/users.route.js']
+  }));
 
 let reports = require('./reports/reports.route');
 let users = require('./users/users.route');
