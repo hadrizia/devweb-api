@@ -1,65 +1,16 @@
 const express = require('express');
 const router = express.Router();
+let report = require('./reports.controller')
+let comment = require('../comments/comments.controller')
 
-router.get('/', function(req, res) {
-    res.send(JSON.stringify(
-            [
-                {
-                    id: 1,
-                    local: 'Parque do Povo',
-                    date: '02/03/2018',
-                    content: 'laklkbdabdkhebkbda',
-                    is_anonymous: true
-                },
-                {
-                    id: 2,
-                    local: 'UFCG',
-                    date: '03/02/2018',
-                    content: 'laklkbdabdkhebkbda',
-                    id_author: '1',
-                    is_anonymous: false
-                }
-            ]
-        ));
-});
+router.get('/:reportId', report.getReport);
 
-router.post('/', function(req, res) {
-    res.send(JSON.stringify(
-        {
-            id: 3,
-            local: 'Parque da Criança',
-            date: '02/03/2017',
-            content: 'laklkbdabdkhebkbdaajdakjdbdsajkdajkbd',
-            id_author: '2',
-            is_anonymous: false
-        }
-    ));
-});
+router.post('/', report.createReport);
 
-router.put('/', function(req, res) {
-    res.send(JSON.stringify(
-        {
-            id: 3,
-            local: 'Parque da Criança editado',
-            date: '02/03/2017',
-            content: 'laklkbdabdkhebkbdaajdakjdbdsajkdajkbd',
-            id_author: '2',
-            is_anonymous: false
-        }
-    ));
-});
+router.put('/:reportId', report.updateReport);
 
-router.delete('/', function(req, res) {
-    res.send(JSON.stringify(
-        {
-            id: 3,
-            local: 'Parque da Criança deleted',
-            date: '02/03/2017',
-            content: 'laklkbdabdkhebkbdaajdakjdbdsajkdajkbd',
-            id_author: '2',
-            is_anonymous: false
-        }
-    ));
-});
+router.delete('/:reportId', report.deleteReport);
+
+router.get('/:reportId/comments', comment.getCommentsByReportId);
 
 module.exports = router;

@@ -5,6 +5,8 @@
  */
 const express = require('express');
 const router = express.Router();
+let user = require('./users.controller')
+let report = require('../reports/reports.controller')
 
 /**
  * @swagger
@@ -29,59 +31,16 @@ const router = express.Router();
  *          required: true
  *          dataType: string
  */
-router.get('/', function(req, res) {
-    res.send(JSON.stringify(
-        [
-            {
-                id: 1,
-                name: 'Hadrizia Santos',
-                photo: 'default'
-            },
-            {
-                id: 2,
-                name: 'Marianne Linhares',
-                photo: 'default'
-            }
-        ]
-    ));
-});
+router.get('/:userId', user.getUser);
 
-router.post('/', function(req, res) {
-    res.send(JSON.stringify(
-        {
-            id: 3,
-            name: 'Jade CatLady',
-            photo: 'default'
-        }
-    ));
-});
+router.post('/', user.createUser);
 
-router.post('/login', function(req, res) {
-    res.send(JSON.stringify(
-        {
-            id: 3,
-            name: 'Jade CatLady',
-            photo: 'default'
-        }
-    ));
-});
+router.post('/login', user.login);
 
-router.put('/', function(req, res) {
-    res.send(JSON.stringify(
-        {
-            id: 3,
-            name: 'Jade CatLady edited',
-            photo: 'default'
-        }
-    ));
-});
+router.put('/:userId', user.updateUser);
 
-router.delete('/', function(req, res) {
-    res.send(JSON.stringify(
-        {
-            sucess: true
-        }
-    ));
-});
+router.delete('/:userId', user.deleteUser);
+
+router.get('/:userId/reports', report.getReportsByUserId);
 
 module.exports = router;

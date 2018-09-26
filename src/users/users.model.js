@@ -1,17 +1,15 @@
-var userSchema = new mongoose.Schema({
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+var userSchema = new Schema({
   name: String,
   photoUrl: String,
-  birth: { type: Date, default: Date.now },
+  birth: {type: Date, default: Date.now},
   email: String,
-  password: String
+  gender: String,
+  password: String,
+  createdAt: {type: Date, default: Date.now},
 });
-userSchema.methods.speak = function () {
-  var greeting = this.name
-    ? "Meow name is " + this.name
-    : "I don't have a name";
-  console.log(greeting);
-}
-var User = mongoose.model('users', userSchema);
 
-var fluffy = new User({ name: 'fluffy' });
-fluffy.speak();
+
+module.exports = mongoose.model('User', userSchema);
