@@ -1,12 +1,19 @@
 const express = require('express');
+const passport = require('passport');
+const session = require('express-session');
+
 const bodyParser = require('body-parser');
 const morgan  = require('morgan');
 const swagger = require('swagger-express');
+const cors = require('cors');
 var cache = require('memory-cache');
 var mongoose = require ('mongoose');
 
 const app = express();
-mongoose.connect('mongodb://localhost/test', { useNewUrlParser: true });
+app.use(session({ secret: 'passport-tutorial', cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
+mongoose.connect('mongodb://localhost/devweb', { useNewUrlParser: true });
 
 let reports = require('./reports/reports.route');
 let users = require('./users/users.route');
@@ -21,6 +28,14 @@ newCache.put('foo', 'newbaz');
 setTimeout(function() {
   console.log('foo in new cache is ' + newCache.get('foo'));
 }, 200);
+
+// CORS
+var corsOptions = require('../config/cors');
+if (process.env.NODE_ENV == 'production') {
+  app.use(cors(corsOptions));
+} else {
+  app.use(cors());
+}
 
 // API documentation UI
 app.use(swagger.init(app, {
