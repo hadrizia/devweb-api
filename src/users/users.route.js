@@ -7,7 +7,7 @@ const express = require('express');
 const router = express.Router();
 let user = require('./users.controller');
 let report = require('../reports/reports.controller');
-let authController = require('./auth.controller');
+let authController = require('../auth/auth.controller');
 /**
  * @swagger
  * path: /users
@@ -31,14 +31,14 @@ let authController = require('./auth.controller');
  *          required: true
  *          dataType: string
  */
-router.get('/:userId', authController.checkAuthentication, user.getUser);
+router.get('/:userId', authController.authenticate, user.getUser);
 
 router.post('/', user.createUser);
 
-router.put('/:userId', authController.checkAuthentication, user.updateUser);
+router.put('/:userId', authController.authenticate, authController.authById, user.updateUser);
 
-router.delete('/:userId', authController.checkAuthentication, user.deleteUser);
+router.delete('/:userId', authController.authenticate, user.deleteUser);
 
-router.get('/:userId/reports', authController.checkAuthentication, report.getReportsByUserId);
+router.get('/:userId/reports', authController.authenticate, report.getReportsByUserId);
 
 module.exports = router;

@@ -11,32 +11,17 @@ const PORT = process.env.PORT || 3000;
 var cache = require('memory-cache');
 var mongoose = require ('mongoose');
 
+
 let reports = require('./reports/reports.route');
 let users = require('./users/users.route');
 let comments = require('./comments/comments.route');
-let User = require('./users/users.model');
+let auth = require('./auth/auth.route');
 
 // Iniciando servidor
 const app = express();
 
 // Conectando ao banco de dados mongo
 mongoose.connect('mongodb://localhost/devweb', { useNewUrlParser: true });
-
-// Criando sessão com passaport
-app.use(session({ secret: 'passport-tutorial', cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false }));
-app.use(passport.initialize());
-app.use(passport.session());
-
-passport.use(new LocalStrategy(
-  function(username, password, done) {
-    User.findOne({ username: username }, function (err, user) {
-      if (err) { return done(err); }
-      if (!user) { return done(null, false); }
-      if (!user.verifyPassword(password)) { return done(null, false); }
-      return done(null, user);
-    });
-  }
-));
 
 // Criando nova instância de Cache
 var newCache = new cache.Cache();
@@ -91,16 +76,6 @@ app.listen(PORT, () => console.log('Example app listening on port '+ PORT + '!')
 app.use('/reports', reports);
 app.use('/users', users);
 app.use('/comments', comments);
-app.post('/login', (req, res, next) => {
-  passport.authenticate('local', (err, user, info) => {
-    req.login(user, (err) => {
-      if (err) {
-        return res.send({error: info});
-      } else {
-        return res.send({message: 'You were authenticated & logged in!\n'});
-      }
-    });
-  })(req, res, next);
-})
+app.use('/auth', auth);
 
 module.exports = app;
