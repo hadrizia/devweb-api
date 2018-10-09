@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 var userSchema = new Schema({
   name: String,
+  username: String,
   photoUrl: String,
   birth: {type: Date, default: Date.now},
   email: String,

@@ -1,16 +1,17 @@
 const express = require('express');
 const router = express.Router();
-let report = require('./reports.controller')
-let comment = require('../comments/comments.controller')
+let report = require('./reports.controller');
+let comment = require('../comments/comments.controller');
+let authController = require('../users/auth.controller');
 
-router.get('/:reportId', report.getReport);
+router.get('/:reportId', authController.checkAuthentication, report.getReport);
 
-router.post('/', report.createReport);
+router.post('/', authController.checkAuthentication, report.createReport);
 
-router.put('/:reportId', report.updateReport);
+router.put('/:reportId', authController.checkAuthentication, report.updateReport);
 
-router.delete('/:reportId', report.deleteReport);
+router.delete('/:reportId', authController.checkAuthentication, report.deleteReport);
 
-router.get('/:reportId/comments', comment.getCommentsByReportId);
+router.get('/:reportId/comments', authController.checkAuthentication, comment.getCommentsByReportId);
 
 module.exports = router;

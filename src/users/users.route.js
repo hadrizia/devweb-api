@@ -5,8 +5,11 @@
  */
 const express = require('express');
 const router = express.Router();
-let user = require('./users.controller')
-let report = require('../reports/reports.controller')
+let user = require('./users.controller');
+let report = require('../reports/reports.controller');
+let authController = require('./auth.controller');
+
+router.post('/', authController.login);
 
 /**
  * @swagger
@@ -31,16 +34,16 @@ let report = require('../reports/reports.controller')
  *          required: true
  *          dataType: string
  */
-router.get('/:userId', user.getUser);
+router.get('/:userId', authController.checkAuthentication, user.getUser);
 
 router.post('/', user.createUser);
 
 router.post('/login', user.login);
 
-router.put('/:userId', user.updateUser);
+router.put('/:userId', authController.checkAuthentication, user.updateUser);
 
-router.delete('/:userId', user.deleteUser);
+router.delete('/:userId', authController.checkAuthentication, user.deleteUser);
 
-router.get('/:userId/reports', report.getReportsByUserId);
+router.get('/:userId/reports', authController.checkAuthentication, report.getReportsByUserId);
 
 module.exports = router;
