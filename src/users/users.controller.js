@@ -1,21 +1,22 @@
-const User = require('./users.model')
-const Report = require('../reports/reports.model')
-const Comment = require('../comments/comments.model')
+const User = require('./users.model');
+const Report = require('../reports/reports.model');
+const Comment = require('../comments/comments.model');
 
 exports.createUser = function (req, res, next) {
+    console.log(req.body);
     let body = req.body;
     const newUser = new User(body);
-    newUser.save((err, user) => {
-      if (err)
-        next(err);
-      res.status(201).json(user);
-    });
+    console.log(body);
+    console.log(newUser);
+    newUser.save()
+    .then(() => res.json(newUser))
+    .catch(err => res.json(err));
 };
 
 exports.updateUser = function (req, res, next) {
     let body = req.body;
     let params = req.params;
-    User.findByIdAndUpdate(params.userId, body, {new: false}, (err, user) => {
+    User.findByIdAndUpdate(params.userId, body, {new: true}, (err, user) => {
         if (err)
             next(err);
         res.status(200).json(user);
@@ -60,3 +61,7 @@ exports.login = function(req, res, next) {
         res.status(200).json(user);
     });
 };
+
+exports.getUserByEmail = function(userEmail) {
+    return User.findOne({email: userEmail});
+}
