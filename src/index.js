@@ -91,5 +91,16 @@ app.listen(PORT, () => console.log('Example app listening on port '+ PORT + '!')
 app.use('/reports', reports);
 app.use('/users', users);
 app.use('/comments', comments);
+app.post('/login', (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    req.login(user, (err) => {
+      if (err) {
+        return res.send({error: info});
+      } else {
+        return res.send({message: 'You were authenticated & logged in!\n'});
+      }
+    });
+  })(req, res, next);
+})
 
 module.exports = app;

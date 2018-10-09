@@ -8,9 +8,6 @@ const router = express.Router();
 let user = require('./users.controller');
 let report = require('../reports/reports.controller');
 let authController = require('./auth.controller');
-
-router.post('/', authController.login);
-
 /**
  * @swagger
  * path: /users
@@ -37,8 +34,6 @@ router.post('/', authController.login);
 router.get('/:userId', authController.checkAuthentication, user.getUser);
 
 router.post('/', user.createUser);
-
-router.post('/login', user.login);
 
 router.put('/:userId', authController.checkAuthentication, user.updateUser);
 
