@@ -3,13 +3,10 @@ const Report = require('../reports/reports.model');
 const Comment = require('../comments/comments.model');
 
 exports.createUser = function (req, res, next) {
-    console.log(req.body);
     let body = req.body;
     const newUser = new User(body);
-    console.log(body);
-    console.log(newUser);
     newUser.save()
-    .then(() => res.json(newUser))
+    .then(() => res.status(201).json(newUser))
     .catch(err => res.json(err));
 };
 
