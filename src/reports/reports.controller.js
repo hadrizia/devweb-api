@@ -55,3 +55,41 @@ exports.deleteReport = function(req, res, next) {
         });
     });
 };
+
+exports.addLike = function(req, res, next){
+    let params = req.params;
+
+    Report.findById(params.reportId, (err, report) => {
+        if (err)
+            next(err);
+        report.numLikes = report.numLikes + 1;
+        report.save((err, report) => {
+            if (err)
+              next(err);
+            res.status(200).json(report);
+          });
+    });
+};
+
+exports.addDislike = function(req, res, next) {
+    let params = req.params;
+
+    Report.findById(params.reportId, (err, report) => {
+        if (err)
+            next(err);
+        report.numDislikes = report.numDislikes + 1;
+        report.save((err, report) => {
+            if (err)
+              next(err);
+            res.status(200).json(report);
+          });
+    });
+};
+
+exports.getReports = function(req, res, next){
+    Report.find({}, (err, reports) => {
+        if (err)
+            next(err);
+        res.status(200).json(reports);
+    });
+};

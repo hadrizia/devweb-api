@@ -13,7 +13,16 @@ var reportSchema = new Schema({
   },
   isAnonymous:{
       type: Boolean,
-      default: true}
+      default: true
+  },
+  numLikes: {
+    type: Number,
+    default: 0
+  },
+  numDislikes: {
+    type: Number,
+    default: 0
+  }
 });
 
 module.exports = mongoose.model('Report', reportSchema);

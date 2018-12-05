@@ -6,12 +6,18 @@ let authController = require('../auth/auth.controller');
 
 router.get('/:reportId', authController.authenticate, report.getReport);
 
-router.post('/', authController.authenticate, report.createReport);
+router.post('/', report.createReport);
 
 router.put('/:reportId', authController.authenticate, report.updateReport);
 
 router.delete('/:reportId', authController.authenticate, report.deleteReport);
 
 router.get('/:reportId/comments', authController.authenticate, comment.getCommentsByReportId);
+
+router.post('/:reportId/addLike', report.addLike);
+
+router.post('/:reportId/addDislike', report.addDislike);
+
+router.get('/', report.getReports);
 
 module.exports = router;
