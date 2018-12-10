@@ -1,14 +1,24 @@
-const Report = require('./reports.model')
-const Comment = require('../comments/comments.model')
+const Report = require('./reports.model');
+const Comment = require('../comments/comments.model');
+const User = require('../users/users.model');
+var _        = require('underscore');
+
 
 exports.createReport = function (req, res, next) {
     let body = req.body;
-    const newReport = new Report(body);
-    newReport.save((err, report) => {
-      if (err)
-        next(err);
-      res.status(201).json(report);
-    });
+    User.findById(body.userId, (err, user) => {
+        if (user){
+            body.user = {_id: user._id, name: user.name, username: user.username, photo: user.photoUrl};
+            newReport = new Report(_.omit(body, 'userId'));
+            newReport.save((err, report) => {
+              if (err)
+                next(err);
+              res.status(201).json(report);
+            }); 
+        } else {
+            res.status(404).json({message: 'User not found.'});
+        }
+    });    
 };
 
 exports.updateReport = function (req, res, next) {

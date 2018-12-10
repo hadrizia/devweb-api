@@ -6,8 +6,8 @@ var reportSchema = new Schema({
   createdDate: {
       type: Date, 
       default: Date.now},
-  userId: {
-    type: Schema.Types.ObjectId, 
+  user: {
+    type: Schema.Types.Object, 
     ref: 'User'
   },
   isAnonymous:{
