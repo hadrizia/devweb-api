@@ -90,6 +90,6 @@ exports.getReports = function(req, res, next){
     Report.find({}, (err, reports) => {
         if (err)
             next(err);
-        res.status(200).json(reports);
+        res.status(200).json({reports: reports});
     });
 };

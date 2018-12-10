@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 var reportSchema = new Schema({
-  title: String,
   content: String,
   createdDate: {
       type: Date, 
