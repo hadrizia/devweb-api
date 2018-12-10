@@ -13,10 +13,11 @@ exports.createUser = function (req, res, next) {
 exports.updateUser = function (req, res, next) {
     let body = req.body;
     let params = req.params;
-    User.findByIdAndUpdate(params.userId, body, {new: true}, (err, user) => {
+    User.findByIdAndUpdate(params.userId, body, {new: false}, (err, user) => {
         if (err)
             next(err);
         res.status(200).json(user);
+
     });
 };
 
