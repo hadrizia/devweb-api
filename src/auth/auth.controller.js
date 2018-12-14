@@ -19,7 +19,7 @@ exports.login = function(req, res, next){
                         _id: user._id,
                         email: user.email,
                     },  config.jwtSecret);
-                    return res.json({ userId: user._id, token });
+                    return res.json({ user: user, token });
                 } else {
                     return res.json({message:'Failed. Wrong password.'});
                 }
@@ -75,3 +75,8 @@ exports.authById = function(req, res, next){
 exports.decodeToken = function(token) {
     return jwt.verify(token, config.jwtSecret);
 };
+
+exports.logout = function(req, res, next) {
+    return res.status(200).json({'message': 'Logged Out'});
+  }
+  
