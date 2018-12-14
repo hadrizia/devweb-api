@@ -14,7 +14,7 @@ exports.login = function(req, res, next){
             if(!user) {
                 return res.json({message:'Usuário não encontrado.' });
             } else if(user) {
-                if(userEmail === user.email && user.comparePassword(userPassword, user.password)) {
+                if(userEmail === user.email && userPassword === user.password) {
                     let token = jwt.sign({
                         _id: user._id,
                         email: user.email,

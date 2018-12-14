@@ -6,7 +6,7 @@ const morgan  = require('morgan');
 const swagger = require('swagger-express');
 const cors = require('cors');
 const LocalStrategy = require('passport-local').Strategy;
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 
 var cache = require('memory-cache');
 var mongoose = require ('mongoose');

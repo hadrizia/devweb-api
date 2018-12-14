@@ -1,24 +1,44 @@
-const Report = require('./reports.model')
-const Comment = require('../comments/comments.model')
+const Report = require('./reports.model');
+const Comment = require('../comments/comments.model');
+const User = require('../users/users.model');
+var _        = require('underscore');
+
 
 exports.createReport = function (req, res, next) {
     let body = req.body;
-    const newReport = new Report(body);
-    newReport.save((err, report) => {
-      if (err)
-        next(err);
-      res.status(201).json(report);
-    });
+    if(body.isAnonymous === 'true'){
+        newReport = new Report(body);
+        newReport.save((err, report) => {
+            if (err)
+              next(err);
+            res.status(201).json(report);
+          }); 
+    } else {
+        User.findById(body.userId, (err, user) => {
+            if (user){
+                newReport = new Report(body);
+                console.log(newReport);
+                newReport.save((err, report) => {
+                  if (err)
+                    next(err);
+                  res.status(201).json(report);
+                }); 
+            } else {
+                res.status(404).json({message: 'User not found.'});
+            }
+        }); 
+    }
 };
 
 exports.updateReport = function (req, res, next) {
     let body = req.body;
     let params = req.params;
-    Report.findByIdAndUpdate(params.reportId, body, {new: false}, (err, report) => {
+
+    Report.findByIdAndUpdate(params.reportId, {content: body.content}, {new: false}, (err, report) => {
         if (err)
-            next(err);
-        res.status(200).json(report);
-});
+            next(err);            
+        res.status(404).json({message: 'User not found.'});
+    });    
 };
 
 exports.getReport = function (req, res, next) {
@@ -27,18 +47,18 @@ exports.getReport = function (req, res, next) {
     Report.findById(params.reportId, (err, report) => {
         if (err)
             next(err);
-        res.status(200).json(report);
+            res.status(201).json(report);
     });
 };
 
 exports.getReportsByUserId = function (req, res, next) {
     let params = req.params;
-
+        
     Report.find({userId: params.userId}, (err, reports) => {
-        if (err)
-            next(err);
-        res.status(200).json(reports);
-    });
+            if (err)
+                next(err);
+            res.status(200).json(reports);
+    });  
 };
 
 exports.deleteReport = function(req, res, next) {
@@ -90,6 +110,31 @@ exports.getReports = function(req, res, next){
     Report.find({}, (err, reports) => {
         if (err)
             next(err);
-        res.status(200).json(reports);
+        a = []
+        reports.forEach(function(report){
+            if (report.isAnonymous == true){
+                a.push(report);
+            } else {
+                User.findById(report.userId, (err, user)=>{
+                    if (err)
+                        next(err)
+                    u = {name: user.name, photo: user.photoUrl};
+                    newInfo = {
+                        isAnonymous: report.isAnonymous ,
+                        numLikes: report.numLikes,
+                        numDislikes: report.numDislikes,
+                        _id: report._id,
+                        content: report.content,
+                        userId: report.userId,
+                        createdDate: report.createdDate,
+                        user: u};
+                    a.push(newInfo);
+
+                    if (reports.length === a.length){
+                        res.status(200).json({reports: a});
+                    }
+                });
+            }
+        });        
     });
 };
