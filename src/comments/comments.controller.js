@@ -1,4 +1,5 @@
-const Comment = require('./comments.model')
+const Comment = require('./comments.model');
+const User = require('./../users/users.model');
 
 exports.createComment = function (req, res, next) {
     let body = req.body;
@@ -61,32 +62,33 @@ exports.getCommentsByReportId = function(req, res, next) {
     Comment.find({reportId: params.reportId}, (err, comments) => {
         if(err)
             next(err);
-
-            if (err)
-            next(err);
         a = []
-        comments.forEach(function(comment){
-            if (comment.isAnonymous == true){
-                a.push(comment);
-            } else {
-                User.findById(comment.userId, (err, user)=>{
-                    if (err)
-                        next(err)
-                    u = {name: user.name, photo: user.photoUrl};
-                    newInfo = {
-                        isAnonymous: comment.isAnonymous,
-                        _id: comment._id,
-                        content: comment.content,
-                        userId: comment.userId,
-                        createdDate: comment.createdDate,
-                        user: u};
-                    a.push(newInfo);
-
-                    if (comments.length === a.length){
-                        res.status(200).json({comments: a});
-                    }
-                });
-            }
-        });
+        if(comments.length > 0){
+            comments.forEach(function(comment){
+                if (comment.isAnonymous == true){
+                    a.push(comment);
+                } else {
+                    User.findById(comment.userId, (err, user)=>{
+                        if (err)
+                            next(err)
+                        u = {name: user.name, photo: user.photoUrl};
+                        newInfo = {
+                            isAnonymous: comment.isAnonymous,
+                            _id: comment._id,
+                            content: comment.content,
+                            userId: comment.userId,
+                            createdDate: comment.createdDate,
+                            user: u};
+                        a.push(newInfo);
+    
+                        if (comments.length === a.length){
+                            res.status(200).json({comments: a});
+                        }
+                    });
+                }
+            });
+        } else{
+            res.status(200).json({comments: a});
+        }
     });
 };
