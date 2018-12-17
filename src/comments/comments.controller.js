@@ -2,12 +2,27 @@ const Comment = require('./comments.model')
 
 exports.createComment = function (req, res, next) {
     let body = req.body;
-    const newComment = new Comment(body);
-    newComment.save((err, comment) => {
-      if (err)
-        next(err);
-      res.status(201).json(comment);
-    });
+    if(body.isAnonymous === true){
+        newComment = new Comment(body);
+        newComment.save((err, comment) => {
+            if (err)
+              next(err);
+            res.status(201).json(comment);
+          }); 
+    } else {
+        User.findById(body.userId, (err, user) => {
+            if (user){
+                newComment = new Comment(body);
+                newComment.save((err, comment) => {
+                  if (err)
+                    next(err);
+                  res.status(201).json(comment);
+                }); 
+            } else {
+                res.status(404).json({message: 'User not found.'});
+            }
+        }); 
+    }
 };
 
 exports.updateComment = function (req, res, next) {
@@ -46,6 +61,32 @@ exports.getCommentsByReportId = function(req, res, next) {
     Comment.find({reportId: params.reportId}, (err, comments) => {
         if(err)
             next(err);
-            res.status(200).json(comments);
+
+            if (err)
+            next(err);
+        a = []
+        comments.forEach(function(comment){
+            if (comment.isAnonymous == true){
+                a.push(comment);
+            } else {
+                User.findById(comment.userId, (err, user)=>{
+                    if (err)
+                        next(err)
+                    u = {name: user.name, photo: user.photoUrl};
+                    newInfo = {
+                        isAnonymous: comment.isAnonymous,
+                        _id: comment._id,
+                        content: comment.content,
+                        userId: comment.userId,
+                        createdDate: comment.createdDate,
+                        user: u};
+                    a.push(newInfo);
+
+                    if (comments.length === a.length){
+                        res.status(200).json({comments: a});
+                    }
+                });
+            }
+        });
     });
 };

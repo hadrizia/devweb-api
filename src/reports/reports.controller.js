@@ -6,7 +6,7 @@ var _        = require('underscore');
 
 exports.createReport = function (req, res, next) {
     let body = req.body;
-    if(body.isAnonymous === 'true'){
+    if(body.isAnonymous === true){
         newReport = new Report(body);
         newReport.save((err, report) => {
             if (err)
