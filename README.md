@@ -7,13 +7,15 @@ A aplicação consiste em um sistema de sugestões de melhorias para o curso de 
 
 Para executar a API Rest, é necessário executar os seguintes passos:
 
-1. Clone o repositório e, dentro do diretório `devweb-api`, instale todas as dependências rodando a linha de comando abaixo: 
+1. Ter o banco de dados MongoDB e inicializá-lo;
+
+2. Clonar o repositório e, dentro do diretório `devweb-api`, instalar todas as dependências rodando a linha de comando abaixo: 
 
 ```
   npm install
 ```
 
-2. Para rodar o servidor, execute a seguinte linha de comando:
+3. Para rodar o servidor, execute a seguinte linha de comando:
 
 ```
   npm start
